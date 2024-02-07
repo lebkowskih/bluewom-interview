@@ -31,4 +31,13 @@
             </div>
         </div>
     </div>
+
+    @if ($errors->any())
+        <x-modal name="modal" :show="true">
+            <div class="py-6 px-6">
+                <p class="text-red-700 font-medium">{{ __('You have already added this currency') }}</p>
+            </div>
+        </x-modal>
+    @endif
+
 </x-app-layout>
