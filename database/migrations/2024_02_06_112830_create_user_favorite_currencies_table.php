@@ -24,7 +24,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('currencies');
 
-            $table->timestamps();
+            $table->unique(['user_id', 'currency_id']);
         });
     }
 

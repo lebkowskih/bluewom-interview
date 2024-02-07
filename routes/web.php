@@ -20,9 +20,13 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/currencies', [CurrencyController::class, 'index'])->name('dashboard');
-    Route::post('/currencies/add-favorite/{currencyId}', [UserFavoriteCurrencyController::class, 'store'])->name('currencies.add-favorite');
+Route::middleware(['auth', 'verified'])->prefix('/currencies')->group(function () {
+    Route::get('/', [CurrencyController::class, 'index'])->name('dashboard');
+    Route::prefix('/favorite')->group(function () {
+        Route::post('/add/{currency}', [UserFavoriteCurrencyController::class, 'store'])->name('currencies.favorite.add');
+        Route::delete('/delete', [UserFavoriteCurrencyController::class, 'deleteAll'])->name('currencies.favorite.delete.all');
+        Route::delete('/delete/{currency}', [UserFavoriteCurrencyController::class, 'delete'])->name('currencies.favorite.delete');
+    });
 });
 
 Route::middleware('auth')->group(function () {
