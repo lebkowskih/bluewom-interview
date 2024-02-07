@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserFavoriteCurrencyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/currencies', [CurrencyController::class, 'index'])->name('dashboard');
+    Route::post('/currencies/add-favorite/{currencyId}', [UserFavoriteCurrencyController::class, 'store'])->name('currencies.add-favorite');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
